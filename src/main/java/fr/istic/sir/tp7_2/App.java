@@ -10,26 +10,33 @@ public class App
 {
 	public static void main( String[] args ) throws InterruptedException
 	{
-		ex4();
+		Jedis jedis = new Jedis("localhost");
+		//	Delete all the keys of the currently selected database
+		jedis.flushDB();
+		System.out.println("==========================ex1=======================");
+		ex1(jedis);
+		System.out.println("\n==========================ex2=======================");
+		ex2(jedis);
+		System.out.println("\n==========================ex3=======================");
+		ex3(jedis);
+		System.out.println("\n==========================ex4=======================");
+		ex4(jedis);
 	}
 	
-	public static void ex1(){
-		Jedis jedis = new Jedis("localhost");
+	public static void ex1(Jedis jedis){
 		jedis.set("foo", "bar");
 		String value = jedis.get("foo");
 		System.err.println(value);    
 	}
 	
-	public static void ex2() {
-        Jedis jedis = new Jedis("localhost");
+	public static void ex2(Jedis jedis) {
         System.out.println(jedis.get("counter"));
         jedis.incr("counter");
         System.out.println(jedis.get("counter"));
     }
 
-	public static void ex3() throws InterruptedException {
+	public static void ex3(Jedis jedis) throws InterruptedException {
         String cacheKey = "cachekey";
-        Jedis jedis = new Jedis("localhost");
         // adding a new key
         jedis.set(cacheKey, "cached value");
         // setting the TTL in seconds
@@ -48,9 +55,8 @@ public class App
         System.out.println("Expired Key:" + jedis.get(cacheKey));
     }
 	
-	public static void ex4() {
+	public static void ex4(Jedis jedis) {
         String cacheKey = "languages";
-        Jedis jedis = new Jedis("localhost");
         // Adding a set as value
 
         jedis.sadd(cacheKey, "Java");
